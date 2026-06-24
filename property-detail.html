@@ -1,0 +1,310 @@
+<!-- landarc/property-detail.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5-Bed Villa DHA Karachi - LandArc</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --navy: #0D1B2A; --navy-2: #162032; --slate: #2E4057;
+            --gold: #B8860B; --gold-2: #D4A017; --gold-light: #F0C040;
+            --cream: #F8F5EF; --cream-2: #EDE9E0; --white: #FFFFFF;
+            --text: #1A1A2E; --text-2: #3D4555; --text-muted: #7A8399; --border: #E2DDD4;
+            --shadow: 0 4px 30px rgba(13,27,42,0.08); --shadow-lg: 0 20px 60px rgba(13,27,42,0.12);
+            --green: #27AE60;
+        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--cream); color: var(--text); }
+
+        nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 14px 0; background: rgba(255,255,255,0.97); backdrop-filter: blur(20px); box-shadow: 0 2px 40px rgba(13,27,42,0.08); }
+        .nav-container { max-width: 1280px; margin: 0 auto; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo-mark { width: 42px; height: 42px; }
+        .logo-mark svg { width: 100%; height: 100%; }
+        .logo-name { font-family: 'Libre Baskerville', serif; font-size: 26px; font-weight: 700; color: var(--navy); }
+        .logo-name span { color: var(--gold-2); }
+        .nav-links { display: flex; list-style: none; gap: 32px; align-items: center; }
+        .nav-links a { text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; transition: 0.3s; }
+        .nav-links a:hover { color: var(--gold-2); }
+        .btn-nav-gold { padding: 11px 26px; background: var(--gold-2); color: white !important; border-radius: 6px; font-weight: 600 !important; }
+        .mobile-toggle { display: none; cursor: pointer; flex-direction: column; gap: 5px; }
+        .mobile-toggle span { width: 26px; height: 2px; background: var(--navy); }
+
+        .section-container { max-width: 1280px; margin: 0 auto; padding: 0 40px; }
+
+        .breadcrumb-bar { padding: 90px 0 20px; }
+        .breadcrumb { font-size: 13px; color: var(--text-muted); }
+        .breadcrumb a { color: var(--gold-2); text-decoration: none; }
+
+        /* Gallery */
+        .prop-gallery { margin-bottom: 40px; }
+        .gallery-main { display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: 320px 220px; gap: 10px; border-radius: 20px; overflow: hidden; }
+        .gallery-main .g-item { overflow: hidden; position: relative; cursor: pointer; }
+        .gallery-main .g-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .gallery-main .g-item:hover img { transform: scale(1.05); }
+        .gallery-main .g-item:first-child { grid-row: span 2; }
+        .gallery-count { position: absolute; bottom: 15px; right: 15px; background: rgba(13,27,42,0.75); backdrop-filter: blur(5px); color: white; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; }
+
+        /* Detail Layout */
+        .detail-layout { display: grid; grid-template-columns: 1fr 390px; gap: 40px; align-items: start; padding-bottom: 100px; }
+
+        /* Main */
+        .detail-main {}
+        .prop-header { margin-bottom: 30px; }
+        .prop-header-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 15px; margin-bottom: 12px; }
+        .prop-status-tag { padding: 6px 16px; background: rgba(39,174,96,0.12); color: var(--green); border: 1px solid rgba(39,174,96,0.2); border-radius: 5px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .prop-actions { display: flex; gap: 10px; }
+        .prop-action-btn { padding: 10px 18px; border: 1.5px solid var(--border); border-radius: 8px; background: white; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.3s; color: var(--text-2); }
+        .prop-action-btn:hover { border-color: var(--gold-2); color: var(--gold-2); }
+        .prop-main-title { font-family: 'Libre Baskerville', serif; font-size: 36px; font-weight: 700; color: var(--navy); margin-bottom: 10px; line-height: 1.2; }
+        .prop-location-detail { font-size: 15px; color: var(--text-muted); margin-bottom: 15px; }
+        .prop-ref { font-size: 13px; color: var(--text-muted); }
+        .prop-ref span { color: var(--gold-2); font-weight: 600; }
+
+        /* Stats Row */
+        .prop-stats { display: flex; gap: 0; background: white; border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); margin-bottom: 35px; }
+        .prop-stat-item { flex: 1; padding: 22px 20px; text-align: center; border-right: 1px solid var(--border); }
+        .prop-stat-item:last-child { border-right: none; }
+        .prop-stat-item .val { font-family: 'Libre Baskerville', serif; font-size: 22px; font-weight: 700; color: var(--navy); margin-bottom: 5px; }
+        .prop-stat-item .lbl { font-size: 12px; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Desc */
+        .detail-section { margin-bottom: 35px; }
+        .detail-section h2 { font-family: 'Libre Baskerville', serif; font-size: 24px; font-weight: 700; color: var(--navy); margin-bottom: 15px; padding-bottom: 12px; border-bottom: 2px solid var(--gold-2); display: inline-block; }
+        .detail-section p { font-size: 15px; color: var(--text-2); line-height: 1.8; margin-bottom: 12px; }
+
+        /* Amenities */
+        .amenities-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .amenity { display: flex; align-items: center; gap: 10px; padding: 12px 15px; background: white; border-radius: 10px; border: 1px solid var(--border); font-size: 14px; font-weight: 500; }
+        .amenity .icon { font-size: 20px; }
+
+        /* Map Placeholder */
+        .map-box { height: 250px; background: var(--cream-2); border-radius: 14px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--text-muted); }
+
+        /* Sidebar */
+        .detail-sidebar { position: sticky; top: 90px; }
+        .price-card { background: white; border-radius: 18px; padding: 35px; box-shadow: var(--shadow-lg); border: 1px solid var(--border); margin-bottom: 20px; }
+        .price-card .tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-2); margin-bottom: 8px; }
+        .main-price { font-family: 'Libre Baskerville', serif; font-size: 38px; font-weight: 700; color: var(--navy); margin-bottom: 5px; }
+        .price-psf { font-size: 13px; color: var(--text-muted); margin-bottom: 25px; }
+        .price-divider { height: 1px; background: var(--border); margin: 20px 0; }
+        .inquiry-form label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); margin-bottom: 6px; margin-top: 14px; }
+        .inquiry-form input, .inquiry-form select, .inquiry-form textarea {
+            width: 100%; padding: 13px 16px; border: 1.5px solid var(--border); border-radius: 8px;
+            font-size: 14px; font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text);
+            background: var(--cream); outline: none; transition: 0.3s; resize: none;
+        }
+        .inquiry-form input:focus, .inquiry-form select:focus, .inquiry-form textarea:focus { border-color: var(--gold-2); background: white; }
+        .btn-inquire { width: 100%; margin-top: 18px; padding: 16px; background: var(--navy); color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .btn-inquire:hover { background: var(--slate); }
+        .btn-tour { width: 100%; margin-top: 10px; padding: 14px; background: transparent; border: 1.5px solid var(--gold-2); color: var(--gold-2); border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .btn-tour:hover { background: var(--gold-2); color: white; }
+
+        .agent-card { background: white; border-radius: 18px; padding: 25px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+        .agent-card-header { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid var(--border); }
+        .agent-avatar { width: 60px; height: 60px; border-radius: 50%; overflow: hidden; border: 3px solid var(--gold-2); }
+        .agent-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .agent-name { font-size: 17px; font-weight: 700; color: var(--navy); }
+        .agent-title { font-size: 12px; color: var(--text-muted); }
+        .agent-rating { font-size: 13px; color: var(--gold-2); margin-top: 3px; }
+        .agent-contact-btns { display: flex; gap: 10px; }
+        .agent-btn { flex: 1; padding: 12px; border-radius: 8px; border: 1.5px solid var(--border); background: white; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.3s; color: var(--text-2); text-align: center; }
+        .agent-btn:hover { background: var(--navy); color: white; border-color: var(--navy); }
+
+        /* Similar */
+        .similar-section { padding: 60px 0 100px; }
+        .similar-title { font-family: 'Libre Baskerville', serif; font-size: 34px; font-weight: 700; color: var(--navy); margin-bottom: 30px; text-align: center; }
+        .similar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
+        .sim-card { background: white; border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); text-decoration: none; color: var(--text); transition: 0.3s; }
+        .sim-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+        .sim-img { height: 200px; overflow: hidden; }
+        .sim-img img { width: 100%; height: 100%; object-fit: cover; }
+        .sim-info { padding: 20px; }
+        .sim-name { font-family: 'Libre Baskerville', serif; font-size: 17px; font-weight: 700; margin-bottom: 5px; color: var(--navy); }
+        .sim-loc { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+        .sim-price { font-size: 22px; font-weight: 700; color: var(--navy); font-family: 'Libre Baskerville', serif; }
+
+        footer { background: #162032; padding: 40px 0; text-align: center; }
+        footer p { color: rgba(255,255,255,0.35); font-size: 13px; }
+
+        @media (max-width: 1100px) { .detail-layout { grid-template-columns: 1fr; } .detail-sidebar { position: static; } }
+        @media (max-width: 768px) {
+            .nav-links { display: none; } .mobile-toggle { display: flex; }
+            .gallery-main { grid-template-columns: 1fr; grid-template-rows: 280px 150px 150px; }
+            .gallery-main .g-item:first-child { grid-row: span 1; }
+            .prop-main-title { font-size: 26px; }
+            .amenities-grid { grid-template-columns: 1fr 1fr; }
+            .similar-grid { grid-template-columns: 1fr; }
+            .prop-stats { flex-wrap: wrap; }
+            .prop-stat-item { flex: 1 1 40%; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-container">
+        <a href="index.html" class="logo">
+            <div class="logo-mark"><svg viewBox="0 0 42 42" fill="none"><path d="M21 3L39 12V30L21 39L3 30V12L21 3Z" fill="none" stroke="#D4A017" stroke-width="2"/><path d="M21 8L34 14.5V27.5L21 34L8 27.5V14.5L21 8Z" fill="rgba(212,160,23,0.15)"/><path d="M14 20L19 25L28 16" stroke="#D4A017" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <span class="logo-name">Land<span>Arc</span></span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="properties.html">Properties</a></li>
+            <li><a href="#">Areas</a></li>
+            <li><a href="#">Agents</a></li>
+            <li><a href="#" class="btn-nav-gold">List Property</a></li>
+        </ul>
+        <div class="mobile-toggle"><span></span><span></span><span></span></div>
+    </div>
+</nav>
+
+<div class="breadcrumb-bar">
+    <div class="section-container">
+        <div class="breadcrumb"><a href="index.html">Home</a> / <a href="properties.html">Properties</a> / DHA Phase 6 Villa</div>
+    </div>
+</div>
+
+<section>
+    <div class="section-container">
+        <div class="prop-gallery">
+            <div class="gallery-main">
+                <div class="g-item"><img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=900&h=700&fit=crop" alt=""></div>
+                <div class="g-item"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=500&h=350&fit=crop" alt=""></div>
+                <div class="g-item"><img src="https://images.unsplash.com/photo-1600607687644-c7171b42498b?w=500&h=280&fit=crop" alt="">
+                    <div class="gallery-count">+8 Photos</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-layout">
+            <div class="detail-main">
+                <div class="prop-header">
+                    <div class="prop-header-top">
+                        <span class="prop-status-tag">✅ Verified · Available Now</span>
+                        <div class="prop-actions">
+                            <button class="prop-action-btn">🤍 Save</button>
+                            <button class="prop-action-btn">↗ Share</button>
+                            <button class="prop-action-btn">🖨 Print</button>
+                        </div>
+                    </div>
+                    <h1 class="prop-main-title">5-Bedroom Modern Villa with Private Pool</h1>
+                    <div class="prop-location-detail">📍 DHA Phase 6, Karachi, Sindh, Pakistan</div>
+                    <div class="prop-ref">Property ID: <span>LA-24-KHI-5892</span> · Listed: March 2025</div>
+                </div>
+
+                <div class="prop-stats">
+                    <div class="prop-stat-item"><div class="val">5</div><div class="lbl">Bedrooms</div></div>
+                    <div class="prop-stat-item"><div class="val">6</div><div class="lbl">Bathrooms</div></div>
+                    <div class="prop-stat-item"><div class="val">1,000</div><div class="lbl">Sq Yards</div></div>
+                    <div class="prop-stat-item"><div class="val">4</div><div class="lbl">Parking</div></div>
+                    <div class="prop-stat-item"><div class="val">B+G+2</div><div class="lbl">Floors</div></div>
+                </div>
+
+                <div class="detail-section">
+                    <h2>About This Property</h2>
+                    <p>This magnificent 5-bedroom villa in DHA Phase 6 represents the pinnacle of modern luxury living in Karachi. Designed by award-winning architects, the property seamlessly blends contemporary aesthetics with functional design.</p>
+                    <p>Spread across four floors including a basement, the villa features a stunning open-plan living and dining area on the ground floor, five en-suite bedrooms, a state-of-the-art chef's kitchen, a private cinema room, and a rooftop terrace with panoramic city views.</p>
+                    <p>The centerpiece of the property is the stunning outdoor area featuring a heated swimming pool, landscaped garden, outdoor BBQ area, and a separate guest cottage.</p>
+                </div>
+
+                <div class="detail-section">
+                    <h2>Amenities & Features</h2>
+                    <div class="amenities-grid">
+                        <div class="amenity"><span class="icon">🏊</span> Private Swimming Pool</div>
+                        <div class="amenity"><span class="icon">🌳</span> Landscaped Garden</div>
+                        <div class="amenity"><span class="icon">🎬</span> Home Cinema</div>
+                        <div class="amenity"><span class="icon">🚗</span> 4-Car Parking</div>
+                        <div class="amenity"><span class="icon">🔒</span> 24/7 Security</div>
+                        <div class="amenity"><span class="icon">⚡</span> Solar System (20KW)</div>
+                        <div class="amenity"><span class="icon">🔥</span> Central Heating</div>
+                        <div class="amenity"><span class="icon">❄️</span> Central A/C</div>
+                        <div class="amenity"><span class="icon">🛗</span> Elevator</div>
+                        <div class="amenity"><span class="icon">🏠</span> Guest Cottage</div>
+                        <div class="amenity"><span class="icon">📡</span> Smart Home System</div>
+                        <div class="amenity"><span class="icon">🍳</span> Chef's Kitchen</div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h2>Location</h2>
+                    <div class="map-box">🗺️ DHA Phase 6, Karachi — Map View</div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="detail-sidebar">
+                <div class="price-card">
+                    <div class="tag">For Sale · Freehold</div>
+                    <div class="main-price">PKR 9.5 Crore</div>
+                    <div class="price-psf">≈ PKR 95,000 per Sq Yard</div>
+                    <div style="display:flex; gap:10px; margin-bottom:10px;">
+                        <div style="flex:1; background:var(--cream); border-radius:8px; padding:12px; text-align:center;">
+                            <div style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">Est. Monthly</div>
+                            <div style="font-size:16px; font-weight:700; color:var(--navy); margin-top:4px;">PKR 4.8L</div>
+                        </div>
+                        <div style="flex:1; background:var(--cream); border-radius:8px; padding:12px; text-align:center;">
+                            <div style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">Down Payment</div>
+                            <div style="font-size:16px; font-weight:700; color:var(--navy); margin-top:4px;">PKR 2.38 Cr</div>
+                        </div>
+                    </div>
+                    <div class="price-divider"></div>
+                    <form class="inquiry-form" onsubmit="event.preventDefault(); alert('Inquiry sent! Agent will contact you within 2 hours.');">
+                        <label>Your Name</label>
+                        <input type="text" placeholder="Full Name" required>
+                        <label>Phone</label>
+                        <input type="tel" placeholder="+92 3XX XXXXXXX" required>
+                        <label>Message</label>
+                        <textarea rows="3" placeholder="I'm interested in this property..."></textarea>
+                        <button type="submit" class="btn-inquire">Send Inquiry →</button>
+                        <button type="button" class="btn-tour" onclick="alert('Tour scheduled! We will confirm your viewing time.')">📅 Schedule Viewing</button>
+                    </form>
+                </div>
+
+                <div class="agent-card">
+                    <div class="agent-card-header">
+                        <div class="agent-avatar"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face" alt=""></div>
+                        <div>
+                            <div class="agent-name">Ahmad Siddiqui</div>
+                            <div class="agent-title">Senior Property Consultant</div>
+                            <div class="agent-rating">★★★★★ 4.9 · 124 deals</div>
+                        </div>
+                    </div>
+                    <div class="agent-contact-btns">
+                        <button class="agent-btn" onclick="alert('Calling: +92 312 1234567')">📞 Call</button>
+                        <button class="agent-btn" onclick="alert('Opening WhatsApp...')">💬 WhatsApp</button>
+                        <button class="agent-btn" onclick="alert('Sending email...')">✉️ Email</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="similar-section">
+    <div class="section-container">
+        <h2 class="similar-title">Similar Properties</h2>
+        <div class="similar-grid">
+            <a href="property-detail.html" class="sim-card">
+                <div class="sim-img"><img src="https://images.unsplash.com/photo-1613977257365-aaae5a9817ff?w=500&h=300&fit=crop" alt=""></div>
+                <div class="sim-info"><div class="sim-name">4-Bed Corner House</div><div class="sim-loc">📍 Gulberg III, Lahore</div><div class="sim-price">PKR 5.2 Cr</div></div>
+            </a>
+            <a href="property-detail.html" class="sim-card">
+                <div class="sim-img"><img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=500&h=300&fit=crop" alt=""></div>
+                <div class="sim-info"><div class="sim-name">4-Kanal Farmhouse</div><div class="sim-loc">📍 Bedian Road, Lahore</div><div class="sim-price">PKR 18 Cr</div></div>
+            </a>
+            <a href="property-detail.html" class="sim-card">
+                <div class="sim-img"><img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=500&h=300&fit=crop" alt=""></div>
+                <div class="sim-info"><div class="sim-name">3-Bed Penthouse</div><div class="sim-loc">📍 Bahria Town, Islamabad</div><div class="sim-price">PKR 2.8L/mo</div></div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="section-container"><p>© 2025 LandArc. All rights reserved.</p></div>
+</footer>
+</body>
+</html>
