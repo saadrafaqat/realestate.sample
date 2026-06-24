@@ -1,0 +1,334 @@
+<!-- landarc/properties.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Properties - LandArc</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --navy: #0D1B2A; --navy-2: #162032; --navy-3: #1E2D40; --slate: #2E4057;
+            --gold: #B8860B; --gold-2: #D4A017; --gold-light: #F0C040;
+            --cream: #F8F5EF; --cream-2: #EDE9E0; --white: #FFFFFF;
+            --text: #1A1A2E; --text-2: #3D4555; --text-muted: #7A8399; --border: #E2DDD4;
+            --shadow: 0 4px 30px rgba(13,27,42,0.08); --shadow-lg: 0 20px 60px rgba(13,27,42,0.12);
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--cream); color: var(--text); }
+
+        nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 14px 0; background: rgba(255,255,255,0.97); backdrop-filter: blur(20px); box-shadow: 0 2px 40px rgba(13,27,42,0.08); }
+        .nav-container { max-width: 1280px; margin: 0 auto; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo-mark { width: 42px; height: 42px; }
+        .logo-mark svg { width: 100%; height: 100%; }
+        .logo-name { font-family: 'Libre Baskerville', serif; font-size: 26px; font-weight: 700; color: var(--navy); letter-spacing: 1px; }
+        .logo-name span { color: var(--gold-2); }
+        .nav-links { display: flex; list-style: none; gap: 32px; align-items: center; }
+        .nav-links a { text-decoration: none; color: var(--text-2); font-size: 14px; font-weight: 500; transition: 0.3s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--gold-2); }
+        .btn-nav-gold { padding: 11px 26px; background: var(--gold-2); color: white !important; border-radius: 6px; font-weight: 600 !important; }
+        .mobile-toggle { display: none; cursor: pointer; flex-direction: column; gap: 5px; }
+        .mobile-toggle span { width: 26px; height: 2px; background: var(--navy); }
+
+        .section-container { max-width: 1280px; margin: 0 auto; padding: 0 40px; }
+
+        .page-header { padding: 120px 0 50px; background: var(--navy); text-align: center; }
+        .page-header h1 { font-family: 'Libre Baskerville', serif; font-size: 52px; color: white; margin-bottom: 12px; }
+        .page-header p { color: rgba(255,255,255,0.55); font-size: 16px; }
+        .breadcrumb { margin-top: 15px; font-size: 13px; color: rgba(255,255,255,0.4); }
+        .breadcrumb a { color: var(--gold-2); text-decoration: none; }
+
+        /* Filters */
+        .filters-bar { background: white; padding: 25px 0; box-shadow: var(--shadow); position: sticky; top: 68px; z-index: 100; }
+        .filters-inner { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+        .filter-select {
+            padding: 11px 16px; border: 1.5px solid var(--border); border-radius: 8px;
+            font-size: 13px; font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text);
+            background: var(--cream); outline: none; cursor: pointer; transition: 0.3s; font-weight: 500;
+        }
+        .filter-select:focus { border-color: var(--gold-2); }
+        .filter-btn {
+            padding: 11px 22px; border-radius: 8px; border: 1.5px solid var(--border);
+            background: transparent; font-size: 13px; font-weight: 600; color: var(--text-2);
+            cursor: pointer; transition: 0.3s;
+        }
+        .filter-btn.active, .filter-btn:hover { background: var(--navy); color: white; border-color: var(--navy); }
+        .results-count { margin-left: auto; font-size: 14px; color: var(--text-muted); font-weight: 500; }
+
+        /* Properties Layout */
+        .properties-page { padding: 50px 0 100px; }
+        .properties-layout { display: grid; grid-template-columns: 300px 1fr; gap: 35px; align-items: start; }
+
+        /* Sidebar Filter */
+        .filter-sidebar { position: sticky; top: 130px; background: white; border-radius: 16px; padding: 30px; box-shadow: var(--shadow); }
+        .filter-sidebar h3 { font-family: 'Libre Baskerville', serif; font-size: 22px; font-weight: 700; margin-bottom: 25px; color: var(--navy); }
+        .filter-group { margin-bottom: 25px; padding-bottom: 25px; border-bottom: 1px solid var(--border); }
+        .filter-group:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .filter-group h4 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); margin-bottom: 14px; }
+        .filter-checks { display: flex; flex-direction: column; gap: 10px; }
+        .filter-check { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--text-2); cursor: pointer; }
+        .filter-check input { accent-color: var(--gold-2); width: 16px; height: 16px; }
+        .range-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .range-input { padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 6px; font-size: 13px; width: 100%; outline: none; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .range-input:focus { border-color: var(--gold-2); }
+        .btn-apply { width: 100%; margin-top: 20px; padding: 14px; background: var(--navy); color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .btn-apply:hover { background: var(--slate); }
+
+        /* Property Cards */
+        .properties-list { display: flex; flex-direction: column; gap: 22px; }
+        .prop-list-card {
+            background: white; border-radius: 16px; overflow: hidden;
+            box-shadow: var(--shadow); display: grid; grid-template-columns: 340px 1fr;
+            transition: all 0.3s; text-decoration: none; color: var(--text);
+        }
+        .prop-list-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-3px); }
+        .prop-list-img { position: relative; overflow: hidden; height: 240px; }
+        .prop-list-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .prop-list-card:hover .prop-list-img img { transform: scale(1.05); }
+        .prop-list-tag { position: absolute; top: 15px; left: 15px; padding: 5px 12px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+        .tag-sale { background: var(--navy); color: white; }
+        .tag-rent { background: var(--slate); color: white; }
+        .tag-new { background: var(--gold-2); color: var(--navy); }
+        .prop-list-body { padding: 30px; display: flex; flex-direction: column; justify-content: space-between; }
+        .prop-list-top {}
+        .prop-list-type { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--gold-2); margin-bottom: 8px; }
+        .prop-list-name { font-family: 'Libre Baskerville', serif; font-size: 22px; font-weight: 700; color: var(--navy); margin-bottom: 8px; line-height: 1.3; }
+        .prop-list-loc { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; }
+        .prop-list-desc { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 18px; }
+        .prop-list-feats { display: flex; gap: 20px; padding: 15px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 18px; }
+        .feat-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-2); font-weight: 500; }
+        .prop-list-bottom { display: flex; justify-content: space-between; align-items: center; }
+        .prop-list-price { font-family: 'Libre Baskerville', serif; font-size: 26px; font-weight: 700; color: var(--navy); }
+        .prop-list-price small { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; color: var(--text-muted); font-weight: 400; }
+        .btn-view { padding: 12px 26px; background: var(--gold-2); color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .btn-view:hover { background: var(--navy); }
+
+        footer { background: var(--navy-2); padding: 40px 0; text-align: center; }
+        footer p { color: rgba(255,255,255,0.35); font-size: 13px; }
+        .navy-2 { --navy-2: #162032; }
+
+        @media (max-width: 1024px) { .properties-layout { grid-template-columns: 1fr; } .filter-sidebar { position: static; } }
+        @media (max-width: 768px) {
+            .nav-links { display: none; } .mobile-toggle { display: flex; }
+            .prop-list-card { grid-template-columns: 1fr; }
+            .prop-list-img { height: 220px; }
+            .page-header h1 { font-size: 34px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-container">
+        <a href="index.html" class="logo">
+            <div class="logo-mark">
+                <svg viewBox="0 0 42 42" fill="none"><path d="M21 3L39 12V30L21 39L3 30V12L21 3Z" fill="none" stroke="#D4A017" stroke-width="2"/><path d="M21 8L34 14.5V27.5L21 34L8 27.5V14.5L21 8Z" fill="rgba(212,160,23,0.15)"/><path d="M14 20L19 25L28 16" stroke="#D4A017" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <span class="logo-name">Land<span>Arc</span></span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="properties.html" class="active">Properties</a></li>
+            <li><a href="#">Areas</a></li>
+            <li><a href="#">Agents</a></li>
+            <li><a href="#" class="btn-nav-gold">List Property</a></li>
+        </ul>
+        <div class="mobile-toggle"><span></span><span></span><span></span></div>
+    </div>
+</nav>
+
+<section class="page-header">
+    <div class="section-container">
+        <h1>All Properties</h1>
+        <p>Browse verified listings across Pakistan's top cities</p>
+        <div class="breadcrumb"><a href="index.html">Home</a> / Properties</div>
+    </div>
+</section>
+
+<div class="filters-bar">
+    <div class="section-container">
+        <div class="filters-inner">
+            <button class="filter-btn active" onclick="setFilter(this)">All</button>
+            <button class="filter-btn" onclick="setFilter(this)">For Sale</button>
+            <button class="filter-btn" onclick="setFilter(this)">For Rent</button>
+            <button class="filter-btn" onclick="setFilter(this)">Plots</button>
+            <select class="filter-select"><option>All Cities</option><option>Karachi</option><option>Lahore</option><option>Islamabad</option><option>Rawalpindi</option></select>
+            <select class="filter-select"><option>Property Type</option><option>House</option><option>Apartment</option><option>Villa</option><option>Penthouse</option></select>
+            <select class="filter-select"><option>Sort: Featured</option><option>Price: Low to High</option><option>Price: High to Low</option><option>Newest</option></select>
+            <span class="results-count">Showing 24 of 3,540 properties</span>
+        </div>
+    </div>
+</div>
+
+<section class="properties-page">
+    <div class="section-container">
+        <div class="properties-layout">
+            <!-- Sidebar -->
+            <div class="filter-sidebar">
+                <h3>Filter Results</h3>
+                <div class="filter-group">
+                    <h4>Property Type</h4>
+                    <div class="filter-checks">
+                        <label class="filter-check"><input type="checkbox" checked> House / Villa</label>
+                        <label class="filter-check"><input type="checkbox"> Apartment</label>
+                        <label class="filter-check"><input type="checkbox"> Penthouse</label>
+                        <label class="filter-check"><input type="checkbox"> Farm House</label>
+                        <label class="filter-check"><input type="checkbox"> Commercial</label>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <h4>Price Range (PKR)</h4>
+                    <div class="range-inputs">
+                        <input class="range-input" type="text" placeholder="Min">
+                        <input class="range-input" type="text" placeholder="Max">
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <h4>Bedrooms</h4>
+                    <div class="filter-checks">
+                        <label class="filter-check"><input type="radio" name="beds"> Any</label>
+                        <label class="filter-check"><input type="radio" name="beds"> 1-2 Beds</label>
+                        <label class="filter-check"><input type="radio" name="beds" checked> 3-4 Beds</label>
+                        <label class="filter-check"><input type="radio" name="beds"> 5+ Beds</label>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <h4>Area (Sq Yards)</h4>
+                    <div class="range-inputs">
+                        <input class="range-input" type="text" placeholder="Min">
+                        <input class="range-input" type="text" placeholder="Max">
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <h4>Amenities</h4>
+                    <div class="filter-checks">
+                        <label class="filter-check"><input type="checkbox"> Swimming Pool</label>
+                        <label class="filter-check"><input type="checkbox"> Garden / Lawn</label>
+                        <label class="filter-check"><input type="checkbox"> Parking</label>
+                        <label class="filter-check"><input type="checkbox"> Generator</label>
+                        <label class="filter-check"><input type="checkbox"> Security</label>
+                    </div>
+                </div>
+                <button class="btn-apply" onclick="window.location='properties.html'">Apply Filters</button>
+            </div>
+
+            <!-- Properties List -->
+            <div class="properties-list">
+                <a href="property-detail.html" class="prop-list-card">
+                    <div class="prop-list-img">
+                        <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&h=400&fit=crop" alt="">
+                        <span class="prop-list-tag tag-new">New</span>
+                    </div>
+                    <div class="prop-list-body">
+                        <div class="prop-list-top">
+                            <div class="prop-list-type">Luxury Villa</div>
+                            <div class="prop-list-name">5-Bed Modern Villa with Pool</div>
+                            <div class="prop-list-loc">📍 DHA Phase 6, Karachi</div>
+                            <div class="prop-list-desc">Stunning contemporary villa with private pool, landscaped garden, home cinema, and fully equipped kitchen. Brand new, never lived in.</div>
+                            <div class="prop-list-feats">
+                                <div class="feat-item">🛏 5 Beds</div>
+                                <div class="feat-item">🚿 6 Baths</div>
+                                <div class="feat-item">📐 1,000 Sq Yd</div>
+                                <div class="feat-item">🚗 4 Parking</div>
+                            </div>
+                        </div>
+                        <div class="prop-list-bottom">
+                            <div class="prop-list-price">PKR 9.5 Cr</div>
+                            <button class="btn-view" onclick="window.location='property-detail.html'">View Details →</button>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="property-detail.html" class="prop-list-card">
+                    <div class="prop-list-img">
+                        <img src="https://images.unsplash.com/photo-1613977257365-aaae5a9817ff?w=600&h=400&fit=crop" alt="">
+                        <span class="prop-list-tag tag-sale">For Sale</span>
+                    </div>
+                    <div class="prop-list-body">
+                        <div class="prop-list-top">
+                            <div class="prop-list-type">Residential House</div>
+                            <div class="prop-list-name">Corner 4-Bed House in Gulberg</div>
+                            <div class="prop-list-loc">📍 Gulberg III, Lahore</div>
+                            <div class="prop-list-desc">Beautiful corner house with wide road frontage in Lahore's most prestigious neighborhood. Marble flooring, modular kitchen, solar installed.</div>
+                            <div class="prop-list-feats">
+                                <div class="feat-item">🛏 4 Beds</div>
+                                <div class="feat-item">🚿 5 Baths</div>
+                                <div class="feat-item">📐 500 Sq Yd</div>
+                                <div class="feat-item">🚗 2 Parking</div>
+                            </div>
+                        </div>
+                        <div class="prop-list-bottom">
+                            <div class="prop-list-price">PKR 5.2 Cr</div>
+                            <button class="btn-view" onclick="window.location='property-detail.html'">View Details →</button>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="property-detail.html" class="prop-list-card">
+                    <div class="prop-list-img">
+                        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&h=400&fit=crop" alt="">
+                        <span class="prop-list-tag tag-rent">For Rent</span>
+                    </div>
+                    <div class="prop-list-body">
+                        <div class="prop-list-top">
+                            <div class="prop-list-type">Luxury Penthouse</div>
+                            <div class="prop-list-name">High-Rise 3-Bed Penthouse</div>
+                            <div class="prop-list-loc">📍 Bahria Town, Islamabad</div>
+                            <div class="prop-list-desc">Spectacular city-view penthouse on 22nd floor. Private terrace, floor-to-ceiling windows, concierge service, gym & pool access included.</div>
+                            <div class="prop-list-feats">
+                                <div class="feat-item">🛏 3 Beds</div>
+                                <div class="feat-item">🚿 3 Baths</div>
+                                <div class="feat-item">📐 3,200 Sq Ft</div>
+                                <div class="feat-item">🏊 Pool</div>
+                            </div>
+                        </div>
+                        <div class="prop-list-bottom">
+                            <div class="prop-list-price">PKR 2.8L <small>/month</small></div>
+                            <button class="btn-view" onclick="window.location='property-detail.html'">View Details →</button>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="property-detail.html" class="prop-list-card">
+                    <div class="prop-list-img">
+                        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&h=400&fit=crop" alt="">
+                        <span class="prop-list-tag tag-sale">For Sale</span>
+                    </div>
+                    <div class="prop-list-body">
+                        <div class="prop-list-top">
+                            <div class="prop-list-type">Farmhouse</div>
+                            <div class="prop-list-name">4-Kanal Luxury Farmhouse</div>
+                            <div class="prop-list-loc">📍 Bedian Road, Lahore</div>
+                            <div class="prop-list-desc">Magnificent 4-kanal farmhouse with Olympic-size swimming pool, 6-bedroom main house, guest cottage, orchard, and full boundary wall.</div>
+                            <div class="prop-list-feats">
+                                <div class="feat-item">🛏 6 Beds</div>
+                                <div class="feat-item">🚿 7 Baths</div>
+                                <div class="feat-item">📐 4 Kanal</div>
+                                <div class="feat-item">🌳 Garden</div>
+                            </div>
+                        </div>
+                        <div class="prop-list-bottom">
+                            <div class="prop-list-price">PKR 18 Cr</div>
+                            <button class="btn-view" onclick="window.location='property-detail.html'">View Details →</button>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer style="background:#162032;">
+    <div class="section-container"><p>© 2025 LandArc. All rights reserved. Pakistan's Trusted Real Estate Platform.</p></div>
+</footer>
+
+<script>
+    function setFilter(el) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+    }
+</script>
+</body>
+</html>
